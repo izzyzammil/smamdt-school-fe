@@ -10,10 +10,7 @@ export const AddStudent = () => {
   const saveProduct = async (e) => {
     e.preventDefault();
 
-    await axios.post("http://localhost:3333/students", {
-      nisn,
-      name,
-    });
+    await axios.post("http://localhost:3333/students", { nisn, name });
     navigate("/");
   };
 

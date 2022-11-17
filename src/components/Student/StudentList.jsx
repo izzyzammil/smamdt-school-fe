@@ -2,6 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import useSWR, { useSWRConfig } from "swr";
+import moment from "moment/moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-regular-svg-icons";
 
 export const StudentList = () => {
   const { mutate } = useSWRConfig();
@@ -28,25 +32,43 @@ export const StudentList = () => {
           <table className="w-full text-sm text-left text-gray-500">
             <thead className="text-xs text-gray-700 uppercase bg-gray-100">
               <tr>
-                <th className="py-3 px-1 text-center">No</th>
+                <th className="py-3 px-2 text-center">No</th>
                 <th className="py-3 px-6">Nisn</th>
+                <th className="py-3 px-6 text-center">No Induk</th>
                 <th className="py-3 px-6">Nama</th>
-                <th className="py-3 px-1 text-center">Action</th>
+                <th className="py-3 px-6">JGender</th>
+                <th className="py-3 px-6">Alamat</th>
+                <th className="py-3 px-6">Tanggal Masuk</th>
+                <th className="py-3 px-6">Status</th>
+                <th className="py-3 px-2 text-center">Action</th>
               </tr>
             </thead>
             <tbody>
               {data.map((item, index) => (
-                <tr className="bg-white border-b" key={index}>
-                  <td className="py-3 px-1 text-center">{index + 1}</td>
+                <tr className="bg-white border-b hover:bg-gray-300" key={index}>
+                  <td className="py-3 px-2 text-center">{index + 1}</td>
                   <td className="py-3 px-6">{item.nisn}</td>
+                  <td className="py-3 px-6 text-center">{item.registrationId}</td>
                   <td className="py-3 px-6">{item.name}</td>
-                  <td className="py-3 px-1 text-center">
-                    <Link to={`/edit/${item.nisn}`} className="font-medium bg-blue-400 hover:bg-blue-500 px-3 py-1 rounded text-white mr-1">
-                      Edit
-                    </Link>
-                    <button onClick={() => deleteProduct(item.nisn)} className="font-medium bg-red-400 hover:bg-red-500 px-3 py-1 rounded text-white">
-                      Hapus
-                    </button>
+                  <td className="py-3 px-6">{item.gender === "Laki_laki" ? "Laki-laki" : item.gender}</td>
+                  <td className="py-3 px-6">{item.address}</td>
+                  <td className="py-3 px-6">{moment(item.dateOfEntry).format("DD-MM-YYYY")}</td>
+                  <td className="py-3 px-6">{item.status === "Siswa_Baru" ? "Siswa Baru" : item.status}</td>
+                  <td className="py-3 px-2 text-center">
+                    <div>
+                      <button
+                        onClick={() => deleteProduct(item.nisn)}
+                        className="font-medium bg-green-600 hover:bg-green-400 px-2 py-2 rounded text-white"
+                      >
+                        <FontAwesomeIcon icon={faEye} size="lg" />
+                      </button>
+                      <Link to={`/edit/${item.nisn}`} className="font-medium bg-blue-600 hover:bg-blue-400 px-2 py-2 rounded text-white mx-1">
+                        <FontAwesomeIcon icon={faEdit} size="lg" />
+                      </Link>
+                      <button onClick={() => {}} className="font-medium bg-red-600 hover:bg-red-400 px-2 py-2 rounded text-white">
+                        <FontAwesomeIcon icon={faTrash} size="lg" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
