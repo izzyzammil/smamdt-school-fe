@@ -8,21 +8,22 @@ import "react-datepicker/dist/react-datepicker.css";
 
 export const AddStudent = () => {
   const navigate = useNavigate();
-  const [startDate, setStartDate] = useState(new Date());
+  const [birthDate, setBirthDate] = useState(new Date());
+  const [dateOfEntry, setDateOfEntry] = useState(new Date());
 
-  const { values, handleChange, handleSubmit } = useFormik({
+  const { values, handleChange, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
       nisn: "",
       registrationId: "",
       name: "",
       placeOfBirth: "",
-      birthDate: "",
+      birthDate: birthDate,
       address: "",
       motherName: "",
       fatherName: "",
       gender: "",
       email: "",
-      dateOfEntry: "",
+      dateOfEntry: dateOfEntry,
       status: "",
     },
     onSubmit: async (e) => {
@@ -129,13 +130,17 @@ export const AddStudent = () => {
                       options={item.option}
                       className="w-full mt-1 focus:outline-none focus:border-slate-500 hover:shadow"
                       placeholder={item.placeholder}
+                      onChange={(e) => setFieldValue(item.key, e.value)}
                     />
                   ) : (
                     <DatePicker
-                      selected={startDate}
-                      onChange={(date) => setStartDate(date)}
+                      selected={values[item.key]}
+                      onChange={(date) => (item.key === "birthDate" ? setBirthDate(date) : setDateOfEntry(date))}
                       dateFormat="dd-MM-yyyy"
                       className="w-full py-3 mt-1 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
                     />
                   )}
                 </div>
@@ -155,6 +160,8 @@ export const AddStudent = () => {
               )}
             </div>
           ))}
+
+          {/* {console.log(values)} */}
 
           <button
             type="submit"
