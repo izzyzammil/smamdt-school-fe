@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import Select from "react-select";
@@ -8,8 +8,6 @@ import "react-datepicker/dist/react-datepicker.css";
 
 export const AddStudent = () => {
   const navigate = useNavigate();
-  const [birthDate, setBirthDate] = useState(new Date());
-  const [dateOfEntry, setDateOfEntry] = useState(new Date());
 
   const { values, handleChange, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
@@ -17,24 +15,25 @@ export const AddStudent = () => {
       registrationId: "",
       name: "",
       placeOfBirth: "",
-      birthDate: birthDate,
+      birthDate: new Date(),
       address: "",
       motherName: "",
       fatherName: "",
       gender: "",
       email: "",
-      dateOfEntry: dateOfEntry,
+      dateOfEntry: new Date(),
       status: "",
     },
     onSubmit: async (e) => {
       try {
-        e.preventDefault();
+        // e.preventDefault();
 
         const _body = { ...values };
-        await axios.post("http://localhost:3333/students", { _body });
+        console.log({ _body });
+        await axios.post("http://localhost:3333/students", _body);
         navigate("/");
       } catch (err) {
-        console.log(err);
+        console.log(err.response.data);
       }
     },
   });
@@ -135,7 +134,7 @@ export const AddStudent = () => {
                   ) : (
                     <DatePicker
                       selected={values[item.key]}
-                      onChange={(date) => (item.key === "birthDate" ? setBirthDate(date) : setDateOfEntry(date))}
+                      onChange={(date) => setFieldValue(item.key, date)}
                       dateFormat="dd-MM-yyyy"
                       className="w-full py-3 mt-1 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
                       showMonthDropdown
@@ -160,8 +159,6 @@ export const AddStudent = () => {
               )}
             </div>
           ))}
-
-          {/* {console.log(values)} */}
 
           <button
             type="submit"
