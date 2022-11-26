@@ -6,6 +6,7 @@ import moment from "moment/moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
+import DefaultProfile from "../../image/default-profile.png";
 
 export const StudentList = () => {
   const { mutate } = useSWRConfig();
@@ -33,10 +34,11 @@ export const StudentList = () => {
             <thead className="text-xs text-gray-700 uppercase bg-gray-100">
               <tr>
                 <th className="py-3 px-2 text-center">No</th>
+                <th className="py-3 px-6">Profil</th>
                 <th className="py-3 px-6">Nisn</th>
                 <th className="py-3 px-6 text-center">No Induk</th>
                 <th className="py-3 px-6">Nama</th>
-                <th className="py-3 px-6">JGender</th>
+                <th className="py-3 px-6">Gender</th>
                 <th className="py-3 px-6">Alamat</th>
                 <th className="py-3 px-6">Tanggal Masuk</th>
                 <th className="py-3 px-6">Status</th>
@@ -47,6 +49,15 @@ export const StudentList = () => {
               {data.map((item, index) => (
                 <tr className="bg-white border-b hover:bg-gray-300" key={index}>
                   <td className="py-3 px-2 text-center">{index + 1}</td>
+                  <td className="py-3 px-6">
+                    <div className="shrink-0">
+                      <img
+                        className="h-10 w-10 object-cover rounded-full"
+                        src={item.studentUrl ? item.studentUrl : DefaultProfile}
+                        alt="profile-student"
+                      />
+                    </div>
+                  </td>
                   <td className="py-3 px-6">{item.nisn}</td>
                   <td className="py-3 px-6 text-center">{item.registrationId}</td>
                   <td className="py-3 px-6">{item.name}</td>

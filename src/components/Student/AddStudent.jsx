@@ -1,13 +1,16 @@
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
+import DefaultProfile from "../../image/default-profile.png";
 import "react-datepicker/dist/react-datepicker.css";
 
 export const AddStudent = () => {
   const navigate = useNavigate();
+  const [file, setFile] = useState("");
+  const [preview, setPreview] = useState("");
 
   const { values, handleChange, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
@@ -25,18 +28,38 @@ export const AddStudent = () => {
       status: "",
     },
     onSubmit: async (e) => {
-      try {
-        // e.preventDefault();
+      const formData = new FormData();
+      // Object.entries(values).forEach(([key, value]) => formData.append(key, value));
 
-        const _body = { ...values };
-        console.log({ _body });
-        await axios.post("http://localhost:3333/students", _body);
+      formData.append("nisn", values.nisn);
+      formData.append("registrationId", values.registrationId);
+      formData.append("name", values.name);
+      formData.append("placeOfBirth", values.placeOfBirth);
+      formData.append("birthDate", values.birthDate);
+      formData.append("address", values.address);
+      formData.append("motherName", values.motherName);
+      formData.append("fatherName", values.fatherName);
+      formData.append("email", values.email);
+      formData.append("dateOfEntry", values.dateOfEntry);
+      formData.append("gender", values.gender);
+      formData.append("status", values.status);
+      formData.append("studentFile", file);
+      try {
+        await axios.post("http://localhost:3333/students", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
         navigate("/");
       } catch (err) {
         console.log(err.response.data);
       }
     },
   });
+
+  const loadImage = (e) => {
+    const image = e.target.files[0];
+    setFile(image);
+    setPreview(URL.createObjectURL(image));
+  };
 
   const formList = [
     {
@@ -109,7 +132,16 @@ export const AddStudent = () => {
       option: [
         { label: "Siswa Baru", value: "Siswa_Baru" },
         { label: "Pindahan", value: "Pindahan" },
+        { label: "Lulus", value: "Lulus" },
+        { label: "Tidak Lulus", value: "Tidak_Lulus" },
+        { label: "Berhenti", value: "Berhenti" },
       ],
+    },
+    {
+      key: "studentFile",
+      label: "Image",
+      placeholder: "",
+      type: "File",
     },
   ];
 
@@ -119,7 +151,7 @@ export const AddStudent = () => {
         <div className="flex flex-col">
           {formList.map((item, index) => (
             <div className="mb-5" key={index}>
-              {item.type === "Select" || item.type === "PickerDate" ? (
+              {item.type === "Select" || item.type === "PickerDate" || item.type === "File" ? (
                 <div>
                   <label htmlFor="" className="font-bold text-slate-700">
                     {item.label}
@@ -131,7 +163,7 @@ export const AddStudent = () => {
                       placeholder={item.placeholder}
                       onChange={(e) => setFieldValue(item.key, e.value)}
                     />
-                  ) : (
+                  ) : item.type === "PickerDate" ? (
                     <DatePicker
                       selected={values[item.key]}
                       onChange={(date) => setFieldValue(item.key, date)}
@@ -141,6 +173,20 @@ export const AddStudent = () => {
                       showYearDropdown
                       dropdownMode="select"
                     />
+                  ) : (
+                    <div className="flex items-center space-x-6 mt-2">
+                      <div className="shrink-0">
+                        <img className="h-16 w-16 object-cover rounded-full" src={preview ? preview : DefaultProfile} alt="profile-student" />
+                      </div>
+                      <label className="block">
+                        <span className="sr-only">Choose File</span>
+                        <input
+                          type="file"
+                          className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-slate-200 file:text-black hover:file:bg-slate-400"
+                          onChange={loadImage}
+                        />
+                      </label>
+                    </div>
                   )}
                 </div>
               ) : (
