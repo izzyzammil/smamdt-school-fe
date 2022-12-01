@@ -43,7 +43,10 @@ export const AddStudent = () => {
       formData.append("dateOfEntry", values.dateOfEntry);
       formData.append("gender", values.gender);
       formData.append("status", values.status);
-      formData.append("studentFile", file);
+      if (file) {
+        formData.append("studentFile", file);
+      }
+
       try {
         await axios.post("http://localhost:3333/students", formData, {
           headers: { "Content-Type": "multipart/form-data" },
