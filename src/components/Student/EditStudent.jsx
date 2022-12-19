@@ -10,7 +10,7 @@ export const EditStudent = () => {
 
   useEffect(() => {
     const getStudentByNisn = async () => {
-      const response = await axios.get(`http://localhost:3333/students/${id}`);
+      const response = await axios.get(`http://localhost:3333/v1/students/${id}`);
       setNisn(response.data.data.nisn);
       setName(response.data.data.name);
     };
@@ -20,7 +20,7 @@ export const EditStudent = () => {
   const updateStudent = async (e) => {
     e.preventDefault();
 
-    await axios.patch(`http://localhost:3333/students/${id}`, {
+    await axios.patch(`http://localhost:3333/v1/students/${id}`, {
       nisn,
       name,
     });

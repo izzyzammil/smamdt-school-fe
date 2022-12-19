@@ -11,7 +11,7 @@ import DefaultProfile from "../../image/default-profile.png";
 export const StudentList = () => {
   const { mutate } = useSWRConfig();
   const fetcher = async () => {
-    const response = await axios.get("http://localhost:3333/students");
+    const response = await axios.get("http://localhost:3333/v1/students/list");
     return response.data.data;
   };
 
@@ -19,7 +19,7 @@ export const StudentList = () => {
   if (!data) return <h2>Loading....</h2>;
 
   const deleteProduct = async (nisn) => {
-    await axios.delete(`http://localhost:3333/students/${nisn}`);
+    await axios.delete(`http://localhost:3333/v1/students/${nisn}`);
     mutate("students");
   };
 
@@ -67,16 +67,16 @@ export const StudentList = () => {
                   <td className="py-3 px-6">{item.status === "Siswa_Baru" ? "Siswa Baru" : item.status}</td>
                   <td className="py-3 px-2 text-center">
                     <div>
-                      <button
-                        onClick={() => deleteProduct(item.nisn)}
-                        className="font-medium bg-green-600 hover:bg-green-400 px-2 py-2 rounded text-white"
-                      >
+                      <button onClick={() => {}} className="font-medium bg-green-600 hover:bg-green-400 px-2 py-2 rounded text-white">
                         <FontAwesomeIcon icon={faEye} size="lg" />
                       </button>
                       <Link to={`/edit/${item.nisn}`} className="font-medium bg-blue-600 hover:bg-blue-400 px-2 py-2 rounded text-white mx-1">
                         <FontAwesomeIcon icon={faEdit} size="lg" />
                       </Link>
-                      <button onClick={() => {}} className="font-medium bg-red-600 hover:bg-red-400 px-2 py-2 rounded text-white">
+                      <button
+                        onClick={() => deleteProduct(item.nisn)}
+                        className="font-medium bg-red-600 hover:bg-red-400 px-2 py-2 rounded text-white"
+                      >
                         <FontAwesomeIcon icon={faTrash} size="lg" />
                       </button>
                     </div>

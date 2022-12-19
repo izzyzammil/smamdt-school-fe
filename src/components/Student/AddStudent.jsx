@@ -48,7 +48,7 @@ export const AddStudent = () => {
       }
 
       try {
-        await axios.post("http://localhost:3333/students", formData, {
+        await axios.post("http://localhost:3333/v1/students/create", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         navigate("/");
