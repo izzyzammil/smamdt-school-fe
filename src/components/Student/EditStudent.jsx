@@ -174,45 +174,47 @@ export const EditStudent = () => {
         <div className="flex flex-col">
           {formList.map((item, index) => (
             <div className="mb-5" key={index}>
-              {item.type === "Select" || item.type === "PickerDate" || item.type === "File" ? (
-                <div>
-                  <label className="font-bold text-slate-700">{item.label}</label>
-                  {item.type === "Select" ? (
-                    <Select
-                      options={item.option}
-                      value={item.option.filter(({ value }) => value === values[item.key])}
-                      className="w-full mt-1 focus:outline-none focus:border-slate-500 hover:shadow"
-                      placeholder={item.placeholder}
-                      onChange={(e) => setFieldValue(item.key, e.value)}
-                    />
-                  ) : item.type === "PickerDate" ? (
-                    <DatePicker
-                      selected={moment(values[item.key]).toDate()}
-                      onChange={(date) => setFieldValue(item.key, date)}
-                      className="w-full py-3 mt-1 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                    />
-                  ) : (
-                    <div className="flex items-center space-x-6 mt-2">
-                      <div className="shrink-0">
-                        <img className="h-16 w-16 object-cover rounded-full" src={preview ? preview : DefaultProfile} alt="profile-student" />
-                      </div>
-                      <label className="block">
-                        <span className="sr-only">Choose File</span>
-                        <input
-                          type="file"
-                          className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-slate-200 file:text-black hover:file:bg-slate-400"
-                          onChange={loadImage}
-                        />
-                      </label>
+              <div>
+                <label className="font-bold text-slate-700">{item.label}</label>
+
+                {item.type === "Select" && item.option && (
+                  <Select
+                    options={item.option}
+                    value={item.option.filter(({ value }) => value === values[item.key])}
+                    className="w-full mt-1 focus:outline-none focus:border-slate-500 hover:shadow"
+                    placeholder={item.placeholder}
+                    onChange={(e) => setFieldValue(item.key, e.value)}
+                  />
+                )}
+
+                {item.type === "PickerDate" && (
+                  <DatePicker
+                    selected={moment(values[item.key]).toDate()}
+                    onChange={(date) => setFieldValue(item.key, date)}
+                    className="w-full py-3 mt-1 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                  />
+                )}
+
+                {item.type === "File" && (
+                  <div className="flex items-center space-x-6 mt-2">
+                    <div className="shrink-0">
+                      <img className="h-16 w-16 object-cover rounded-full" src={preview ? preview : DefaultProfile} alt="profile-student" />
                     </div>
-                  )}
-                </div>
-              ) : (
-                <div>
-                  <label className="font-bold text-slate-700">{item.label}</label>
+                    <label className="block">
+                      <span className="sr-only">Choose File</span>
+                      <input
+                        type="file"
+                        className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-slate-200 file:text-black hover:file:bg-slate-400"
+                        onChange={loadImage}
+                      />
+                    </label>
+                  </div>
+                )}
+
+                {!item.type && (
                   <input
                     type="text"
                     className="w-full py-3 mt-1 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
@@ -220,8 +222,8 @@ export const EditStudent = () => {
                     value={values[item.key]}
                     onChange={handleChange(item.key)}
                   />
-                </div>
-              )}
+                )}
+              </div>
             </div>
           ))}
 
