@@ -70,7 +70,7 @@ export const StudentList = () => {
                       <button onClick={() => {}} className="font-medium bg-green-600 hover:bg-green-400 px-2 py-2 rounded text-white">
                         <FontAwesomeIcon icon={faEye} size="lg" />
                       </button>
-                      <Link to={`/edit/${item.nisn}`} className="font-medium bg-blue-600 hover:bg-blue-400 px-2 py-2 rounded text-white mx-1">
+                      <Link to={`/edit/${item.id}`} className="font-medium bg-blue-600 hover:bg-blue-400 px-2 py-2 rounded text-white mx-1">
                         <FontAwesomeIcon icon={faEdit} size="lg" />
                       </Link>
                       <button
