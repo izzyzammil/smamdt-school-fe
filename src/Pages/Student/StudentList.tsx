@@ -6,7 +6,7 @@ import moment from "moment/moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
-import DefaultProfile from "../../image/default-profile.png";
+import DefaultProfile from "../../Image/default-profile.png";
 
 export const StudentList = () => {
   const { mutate } = useSWRConfig();
@@ -18,7 +18,7 @@ export const StudentList = () => {
   const { data } = useSWR("students", fetcher);
   if (!data) return <h2>Loading....</h2>;
 
-  const deleteProduct = async (nisn) => {
+  const deleteProduct = async (nisn: string) => {
     await axios.delete(`http://localhost:3333/v1/students/${nisn}`);
     mutate("students");
   };
@@ -46,7 +46,7 @@ export const StudentList = () => {
               </tr>
             </thead>
             <tbody>
-              {data.map((item, index) => (
+              {data.map((item: any, index: number) => (
                 <tr className="bg-white border-b hover:bg-gray-300" key={index}>
                   <td className="py-3 px-2 text-center">{index + 1}</td>
                   <td className="py-3 px-6">

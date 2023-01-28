@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
-import DefaultProfile from "../../image/default-profile.png";
+import DefaultProfile from "../../Image/default-profile.png";
 import "react-datepicker/dist/react-datepicker.css";
 
 export const AddStudent = () => {
@@ -35,12 +35,12 @@ export const AddStudent = () => {
       formData.append("registrationId", values.registrationId);
       formData.append("name", values.name);
       formData.append("placeOfBirth", values.placeOfBirth);
-      formData.append("birthDate", values.birthDate);
+      formData.append("birthDate", values.birthDate as any);
       formData.append("address", values.address);
       formData.append("motherName", values.motherName);
       formData.append("fatherName", values.fatherName);
       formData.append("email", values.email);
-      formData.append("dateOfEntry", values.dateOfEntry);
+      formData.append("dateOfEntry", values.dateOfEntry as any);
       formData.append("gender", values.gender);
       formData.append("status", values.status);
       if (file) {
@@ -52,13 +52,13 @@ export const AddStudent = () => {
           headers: { "Content-Type": "multipart/form-data" },
         });
         navigate("/");
-      } catch (err) {
+      } catch (err: any) {
         console.log(err.response.data);
       }
     },
   });
 
-  const loadImage = (e) => {
+  const loadImage = (e: any) => {
     const image = e.target.files[0];
     setFile(image);
     setPreview(URL.createObjectURL(image));
@@ -164,11 +164,11 @@ export const AddStudent = () => {
                       options={item.option}
                       className="w-full mt-1 focus:outline-none focus:border-slate-500 hover:shadow"
                       placeholder={item.placeholder}
-                      onChange={(e) => setFieldValue(item.key, e.value)}
+                      onChange={(e: any) => setFieldValue(item.key, e.value)}
                     />
                   ) : item.type === "PickerDate" ? (
                     <DatePicker
-                      selected={values[item.key]}
+                      selected={(values as any)[item.key]}
                       onChange={(date) => setFieldValue(item.key, date)}
                       dateFormat="dd-MM-yyyy"
                       className="w-full py-3 mt-1 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
@@ -201,7 +201,7 @@ export const AddStudent = () => {
                     type="text"
                     className="w-full py-3 mt-1 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
                     placeholder={item.placeholder}
-                    value={values[item.key]}
+                    value={(values as any)[item.key]}
                     onChange={handleChange(item.key)}
                   />
                 </div>

@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import DefaultProfile from "../../image/default-profile.png";
+import DefaultProfile from "../../Image/default-profile.png";
 import moment from "moment";
 
 export const EditStudent = () => {
@@ -13,7 +13,7 @@ export const EditStudent = () => {
   const [file, setFile] = useState("");
   const [preview, setPreview] = useState("");
   const { id } = useParams();
-  const [student, setStudent] = useState(null);
+  const [student, setStudent] = useState<any | null>(null);
 
   useEffect(() => {
     const getStudentByNisn = async () => {
@@ -28,7 +28,6 @@ export const EditStudent = () => {
 
   useEffect(() => {
     if (student) setValues(student);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [student]);
 
   const { values, handleChange, handleSubmit, setFieldValue, setValues } = useFormik({
@@ -70,13 +69,13 @@ export const EditStudent = () => {
           headers: { "Content-Type": "multipart/form-data" },
         });
         navigate("/");
-      } catch (err) {
+      } catch (err: any) {
         console.log(err.response.data);
       }
     },
   });
 
-  const loadImage = (e) => {
+  const loadImage = (e: any) => {
     const image = e.target.files[0];
     setFile(image);
     setPreview(URL.createObjectURL(image));
@@ -180,16 +179,16 @@ export const EditStudent = () => {
                 {item.type === "Select" && item.option && (
                   <Select
                     options={item.option}
-                    value={item.option.filter(({ value }) => value === values[item.key])}
+                    value={item.option.filter(({ value }) => value === (values as any)[item.key])}
                     className="w-full mt-1 focus:outline-none focus:border-slate-500 hover:shadow"
                     placeholder={item.placeholder}
-                    onChange={(e) => setFieldValue(item.key, e.value)}
+                    onChange={(e: any) => setFieldValue(item.key, e.value)}
                   />
                 )}
 
                 {item.type === "PickerDate" && (
                   <DatePicker
-                    selected={moment(values[item.key]).toDate()}
+                    selected={moment((values as any)[item.key]).toDate()}
                     onChange={(date) => setFieldValue(item.key, date)}
                     className="w-full py-3 mt-1 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
                     showMonthDropdown
@@ -219,7 +218,7 @@ export const EditStudent = () => {
                     type="text"
                     className="w-full py-3 mt-1 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
                     placeholder={item.placeholder}
-                    value={values[item.key]}
+                    value={(values as any)[item.key]}
                     onChange={handleChange(item.key)}
                   />
                 )}

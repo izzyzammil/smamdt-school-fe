@@ -1,5 +1,6 @@
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { StudentList, AddStudent, EditStudent } from "./components/Student";
+import { AddStudent, EditStudent, StudentList } from "./Pages";
 
 function App() {
   return (

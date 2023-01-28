@@ -21,6 +21,6 @@
     //   "@/API": ["API"]
     // }
   },
-  "include": ["src"],
+  "include": ["src/**/*.ts", "src/index.tsx", "src/App.tsx"],
   "exclude": ["node_modules"]
 }
