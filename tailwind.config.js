@@ -5,5 +5,5 @@ module.exports = {
     container: { center: true },
     extend: {},
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 };
