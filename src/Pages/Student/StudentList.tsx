@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment/moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,8 +8,13 @@ import { faEye } from "@fortawesome/free-regular-svg-icons";
 import DefaultProfile from "../../Image/default-profile.png";
 import { useQuery } from "@tanstack/react-query";
 import { studentApi } from "../../API";
+import { DetailStudent } from "./DetailStudent";
+import { Student } from "@/Types";
 
 export const StudentList = () => {
+  const [isOpenDetail, setIsOpenDetail] = useState(false);
+  const [detail, setDetail] = useState<Student | undefined>(undefined);
+
   const { data: dataStudent, isFetching } = useQuery(["student", "list"], () => studentApi.getStudents(), {
     enabled: true,
     onSuccess: async (res) => res.data,
@@ -18,6 +24,11 @@ export const StudentList = () => {
   });
 
   if (!dataStudent && isFetching) return <h2>Loading....</h2>;
+
+  const handleOpenDetail = (record: Student) => {
+    setDetail(record);
+    setIsOpenDetail(true);
+  };
 
   return (
     <div className="container mt-5">
@@ -75,7 +86,7 @@ export const StudentList = () => {
                 </td>
                 <td className="border-2 border-gray-300">
                   <div className="flex justify-center space-x-1">
-                    <button onClick={() => {}} className="bg-green-600 hover:bg-green-400 px-2 py-2 rounded-lg text-white">
+                    <button onClick={() => handleOpenDetail(item)} className="bg-green-600 hover:bg-green-400 px-2 py-2 rounded-lg text-white">
                       <FontAwesomeIcon icon={faEye} size="lg" />
                     </button>
                     <Link to={`/edit/${item.id}`} className="bg-blue-600 hover:bg-blue-400 px-2 py-2 rounded-lg text-white">
@@ -88,6 +99,7 @@ export const StudentList = () => {
           </tbody>
         </table>
       </div>
+      <DetailStudent isOpen={isOpenDetail} title={`Detail: ${detail?.name}`} onClose={() => setIsOpenDetail(false)} detail={detail} />
     </div>
   );
 };
